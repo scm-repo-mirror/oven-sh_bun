@@ -744,6 +744,18 @@ pub fn transpileSourceCode(
             };
         },
 
+        .py => {
+            // Return the file path with .python tag - C++ will run Python
+            // and create JSPyObject wrappers for exports
+            return ResolvedSource{
+                .allocator = null,
+                .source_code = bun.String.cloneUTF8(path.text),
+                .specifier = input_specifier,
+                .source_url = input_specifier.createIfDifferent(path.text),
+                .tag = .python,
+            };
+        },
+
         else => {
             if (flags.disableTranspiling()) {
                 return ResolvedSource{

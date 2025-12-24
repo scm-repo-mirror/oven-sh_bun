@@ -635,7 +635,10 @@ public:
     V(public, LazyPropertyOfGlobalObject<Symbol>, m_nodeVMDontContextify)                                    \
     V(public, LazyPropertyOfGlobalObject<Symbol>, m_nodeVMUseMainContextDefaultLoader)                       \
     V(public, LazyPropertyOfGlobalObject<JSFunction>, m_ipcSerializeFunction)                                \
-    V(public, LazyPropertyOfGlobalObject<JSFunction>, m_ipcParseHandleFunction)
+    V(public, LazyPropertyOfGlobalObject<JSFunction>, m_ipcParseHandleFunction)                              \
+                                                                                                             \
+    /* Python integration */                                                                                 \
+    V(public, WriteBarrier<Structure>, m_JSPyObjectStructure)
 
 #define DECLARE_GLOBALOBJECT_GC_MEMBER(visibility, T, name) \
     visibility:                                             \

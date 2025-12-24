@@ -40,6 +40,7 @@
 #include "JSCommonJSExtensions.h"
 
 #include "BunProcess.h"
+#include "BunPython.h"
 
 namespace Bun {
 using namespace JSC;
@@ -1102,6 +1103,14 @@ static JSValue fetchESMSourceCode(
             JSC::SyntheticSourceProvider::create(WTFMove(function),
                 JSC::SourceOrigin(), specifier->toWTFString(BunString::ZeroCopy)));
         JSC::ensureStillAliveHere(value);
+        RELEASE_AND_RETURN(scope, rejectOrResolve(JSSourceCode::create(globalObject->vm(), WTFMove(source))));
+    } else if (res->result.value.tag == SyntheticModuleType::Python) {
+        // Python module - run Python file and wrap exports as JSPyObject
+        WTF::String filePath = res->result.value.source_code.toWTFString(BunString::NonNull);
+        auto function = generatePythonModuleSourceCode(globalObject, filePath);
+        auto source = JSC::SourceCode(
+            JSC::SyntheticSourceProvider::create(WTFMove(function),
+                JSC::SourceOrigin(), specifier->toWTFString(BunString::ZeroCopy)));
         RELEASE_AND_RETURN(scope, rejectOrResolve(JSSourceCode::create(globalObject->vm(), WTFMove(source))));
     }
 

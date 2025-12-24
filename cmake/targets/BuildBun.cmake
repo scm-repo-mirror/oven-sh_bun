@@ -877,6 +877,13 @@ target_include_directories(${bun} PRIVATE
   ${NODEJS_HEADERS_PATH}/include/node
 )
 
+# --- Python ---
+set(PYTHON_ROOT /Users/dylan/clones/cpython)
+target_include_directories(${bun} PRIVATE
+  ${PYTHON_ROOT}/Include
+  ${PYTHON_ROOT}
+)
+
 if(NOT WIN32)
   target_include_directories(${bun} PRIVATE ${CWD}/src/bun.js/bindings/libuv)
 endif()
@@ -1280,6 +1287,14 @@ add_custom_target(dependencies DEPENDS ${BUN_TARGETS})
 if(APPLE)
   target_link_libraries(${bun} PRIVATE icucore resolv)
   target_compile_definitions(${bun} PRIVATE U_DISABLE_RENAMING=1)
+endif()
+
+# --- Python ---
+target_link_libraries(${bun} PRIVATE
+  ${PYTHON_ROOT}/libpython3.15.a
+)
+if(APPLE)
+  target_link_libraries(${bun} PRIVATE "-framework CoreFoundation")
 endif()
 
 if(USE_STATIC_SQLITE)

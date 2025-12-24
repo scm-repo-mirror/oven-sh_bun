@@ -424,6 +424,8 @@ pub const ResolvedSourceTag = enum(u32) {
     export_default_object = 9,
     /// Signal upwards that the matching value in 'require.extensions' should be used.
     common_js_custom_extension = 10,
+    /// Python module - execute via embedded Python interpreter
+    python = 11,
 
     // Built in modules are loaded through InternalModuleRegistry by numerical ID.
     // In this enum are represented as \`(1 << 9) & id\`
@@ -454,6 +456,7 @@ writeIfNotChanged(
     ExportsObject = 8,
     ExportDefaultObject = 9,
     CommonJSCustomExtension = 10,
+    Python = 11,
     // Built in modules are loaded through InternalModuleRegistry by numerical ID.
     // In this enum are represented as \`(1 << 9) & id\`
     InternalModuleRegistryFlag = 1 << 9,
